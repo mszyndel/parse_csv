@@ -22,7 +22,24 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+To use ParseCsv define your own class which inherits from `ParseCsv::Parser`. In this class, define expected columns like below
+
+```
+class StatementParser < ParseCsv::Parser
+  column :date,        :date,    '%Y-%m-%d',             'Statement date'
+  column :id,          :integer, /\A\[0-9]+\z/,          'Operation ID'
+  column :description, :custom,  /\A.+\z/,               'Description'
+  column :value,       :float,   /\A[0-9]+(\.[0-9]+)\z/, 'Transaction value', ->(v) { v.to_f.round(2) } }
+end
+```
+
+`column` method takes four arguments:
+
+* column name
+* column type (one of integer, float, date, or custom)
+* format, as date format string for :date, regexp for other types
+* header (optional)
+* transformation proc (optional)
 
 ## Development
 
@@ -32,4 +49,4 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/parse_csv.
+Bug reports and pull requests are welcome on GitHub at https://github.com/mszyndel/parse_csv.
