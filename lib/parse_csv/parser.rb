@@ -10,7 +10,7 @@ module ParseCsv
       @errors      = []
       @raw_data    = CSV.new(data, headers: false, liberal_parsing: true).read
       @headers     = []
-      if expect_headers?
+      if expect_headers? && valid_headers?
         @headers = @raw_data.shift
       end
       @parsed_data = []
@@ -22,8 +22,6 @@ module ParseCsv
     end
 
     def validate_and_transform
-      validate_headers
-
       @raw_data.each_with_index do |_, i|
         valid, transformed_row = *validate_and_transform_row(i)
         if valid
@@ -34,9 +32,12 @@ module ParseCsv
       @parsed_data
     end
 
-    def validate_headers
-      unless @headers == self.class.expected_headers
+    def valid_headers?
+      if @raw_data[0] == self.class.expected_headers
+        true
+      else
         @errors << "Invalid headers"
+        false
       end
     end
 
