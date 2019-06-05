@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ClassMethodsTest < Minitest::Test
   def klass
-    Class.new do
+    @klass ||= Class.new do
       extend ParseCsv::ClassMethods
     end
   end

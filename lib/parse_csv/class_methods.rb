@@ -1,7 +1,5 @@
 module ParseCsv
   module ClassMethods
-    @@columns = []
-
     def column(name, type, format, header = nil, transformation = nil)
       case type
       when :integer
@@ -14,15 +12,16 @@ module ParseCsv
         klass = CustomColumn
       end
 
-      @@columns << klass.new(name, format, header, transformation)
+      @columns ||= []
+      @columns << klass.new(name, format, header, transformation)
     end
 
     def expected_headers
-      @@columns.map {|column| column.header }
+      columns.map {|column| column.header }
     end
 
     def columns
-      @@columns
+      @columns || []
     end
   end
 end
