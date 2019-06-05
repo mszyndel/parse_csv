@@ -18,7 +18,7 @@ class FloatColumnTest < Minitest::Test
     column = ParseCsv::FloatColumn.new(:price, /\A[0-9]+(\.[0-9]*)?\z/, nil, ->(v) { v.to_f.round(2) })
     assert_equal [true, 1234.57], column.validate_and_transform_value('1234.5678')
 
-    column = ParseCsv::FloatColumn.new(:price, /\A[0-9]{1,3}(\ [0-9]{3})(\.[0-9]*)?*\z/, nil, ->(value) { value.gsub(/\s/, '').to_f })
+    column = ParseCsv::FloatColumn.new(:price, /\A[0-9]{1,3}(\ [0-9]{3})(\.[0-9]*)?\z/, nil, ->(value) { value.gsub(/\s/, '').to_f })
     assert_equal [true, 12345.678], column.validate_and_transform_value('12 345.678')
   end
 end
