@@ -4,7 +4,7 @@ module ParseCsv
   class Parser
     extend ParseCsv::ClassMethods
 
-    attr_reader :errors, :parsed_data
+    attr_reader :errors, :raw_data, :parsed_data
 
     def initialize(data)
       @errors      = []
@@ -14,6 +14,11 @@ module ParseCsv
         @headers = @raw_data.shift
       end
       @parsed_data = []
+    end
+
+    def valid?
+      validate_and_transform
+      errors.none?
     end
 
     def validate_and_transform
