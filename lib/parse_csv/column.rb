@@ -70,8 +70,7 @@ module ParseCsv
       parsed_value = Date.strptime(value, @format)
 
       [true, transform(parsed_value)]
-    rescue => e
-      puts e.inspect
+    rescue ArgumentError
       [false, nil]
     end
 
